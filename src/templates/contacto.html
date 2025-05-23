@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" type="image/png" href="logo.jpg">
+    <meta charset="UTF-8">
+    <title>Contacto | NOCT Design</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #43cea2, #185a9d); /* verde a azul */
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contact-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #ffffff;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #d0d0d0;
+        }
+
+        input[type="submit"] {
+            background-color: #ffffff;
+            color: #185a9d;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #d0d0d0;
+        }
+        .alert {
+    background-color: #dff0d8;
+    color: #3c763d;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+    </style>
+</head>
+<body>
+    <div class="contact-container">
+        <h1>Contacto</h1>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert">
+                    {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        <form action="/contacto" method="POST">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+
+            <label for="correo">Correo electrónico</label>
+            <input type="email" id="correo" name="correo" placeholder="Tu correo" required>
+
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" rows="4" placeholder="Escribe tu mensaje" required></textarea>
+
+            <input type="submit" value="Enviar mensaje">
+        </form>
+    </div>
+</body>
+</html>
