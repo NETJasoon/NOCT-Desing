@@ -1,18 +1,21 @@
 from quart import Quart, render_template, request, redirect, url_for, flash
 from libsql_client import create_client
+from hypercorn.asyncio import serve
+from hypercorn.config import Config
+import asyncio
 import os
 import re
 
 app = Quart(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "clave_secreta_para_flash")
 
-client = create_client(
-    url=os.getenv("TURSO_URL"),
-    auth_token=os.getenv("TURSO_TOKEN")
-)
-
 @app.before_serving
 async def init_db():
+    global client
+    client = create_client(
+        url=os.getenv("TURSO_URL"),
+        auth_token=os.getenv("TURSO_TOKEN")
+    )
     await client.execute("""
     CREATE TABLE IF NOT EXISTS contacto (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,3 +49,8 @@ async def contacto():
         return redirect(url_for("contacto"))
 
     return await render_template("contacto.html")
+
+if __name__ == "__main__":
+    config = Config()
+    config.bind = [f"0.0.0.0:{os.getenv('PORT', '10000')}"]  # Render asigna el puerto dinámicamente
+    asyncio.run(serve(app, config))
